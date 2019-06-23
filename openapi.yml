@@ -1,0 +1,2084 @@
+openapi: "3.0.0"
+info:
+  version: 0.1.0
+  title: Bus Core Service
+  license:
+    name: MIT
+servers:
+  - url: https://bus.36node.com/api{basePath}
+    description: Bus Core server for UAT
+    variables:
+      basePath:
+        default: /core/v0
+paths:
+  /ac/clusters:
+    get:
+      summary: List all air conditioner clusters
+      operationId: listClusters
+      tags:
+        - airConditioner
+      parameters:
+        - name: _limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: _offset
+          in: query
+          description: How many items to escape
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: _sort
+          in: query
+          description: Fields to sort
+          required: false
+          schema:
+            type: string
+        - name: _select
+          in: query
+          description: Specifies which document fields to include or exclude
+          required: false
+          schema:
+            type: integer
+        - name: producer
+          in: query
+          description: 根据生产商查询
+          required: false
+          schema:
+            type: string
+        - name: model
+          in: query
+          description: 根据型号查询
+          required: false
+          schema:
+            type: string
+        - name: ns
+          in: query
+          required: false
+          description: 根据namespace查询
+          schema:
+            type: string
+        - name: ns_like
+          in: query
+          required: false
+          description: 根据namespace模糊查询
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A paged array of air conditioner clusters
+          headers:
+            X-Total-Count:
+              description: Total count of all clusters match the query
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AcCluster"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      summary: Create an air conditioner cluster
+      operationId: createCluster
+      tags:
+        - airConditioner
+      requestBody:
+        description: Air conditioner cluster to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AcCluster"
+      responses:
+        "201":
+          description: The air conditioner cluster created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcCluster"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /ac/clusters/{clusterId}:
+    get:
+      summary: Get cluster by id
+      operationId: getCluster
+      tags:
+        - airConditioner
+      parameters:
+        - name: clusterId
+          in: path
+          required: true
+          description: The id of the air conditioner cluster to be retrieved
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The air conditioner cluster with given id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcCluster"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    put:
+      summary: Update a air conditioner cluster by id
+      operationId: updateCluster
+      tags:
+        - airConditioner
+      parameters:
+        - name: clusterId
+          in: path
+          required: true
+          description: The id of air conditioner cluster
+          schema:
+            type: string
+      requestBody:
+        description: Air conditioner cluster to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AcCluster"
+      responses:
+        "200":
+          description: The air conditioner cluster
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcCluster"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    delete:
+      description: Delete a air conditioner cluster by id
+      operationId: deleteCluster
+      tags:
+        - airConditioner
+      parameters:
+        - name: clusterId
+          in: path
+          required: true
+          description: The air conditioner cluster
+          schema:
+            type: string
+      responses:
+        "204":
+          description: cluster deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /ac/clusters/{clusterId}/snapshot:
+    get:
+      summary: Get air conditioner cluster snapshot by id
+      operationId: getClusterSnapshot
+      tags:
+        - airConditioner
+      parameters:
+        - name: clusterId
+          in: path
+          required: true
+          description: The id of the air conditioner cluster to be retrieved
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The air conditioner cluster snapshot
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcClusterSnapshot"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /ac/clusters/{clusterId}/records:
+    get:
+      summary: Get air conditioner cluster records
+      operationId: getClusterRecords
+      tags:
+        - airConditioner
+      parameters:
+        - name: clusterId
+          in: path
+          required: true
+          description: The id of the air conditioner cluster to be retrieved
+          schema:
+            type: string
+        - name: _limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: _offset
+          in: query
+          description: How many items to escape
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: _select
+          in: query
+          description: Specifies which document fields to include or exclude
+          required: false
+          schema:
+            type: integer
+        - name: at_gt
+          in: query
+          description: 返回采集时间大于某个时间戳的记录
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: at_lt
+          in: query
+          description: 返回采集时间小宇某个时间戳的记录
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: The air conditioner cluster record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcClusterRecord"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /ac/hosts:
+    get:
+      summary: List all air conditioner hosts
+      operationId: listHosts
+      tags:
+        - airConditioner
+      parameters:
+        - name: _limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: _offset
+          in: query
+          description: How many items to escape
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: _sort
+          in: query
+          description: Fields to sort
+          required: false
+          schema:
+            type: string
+        - name: _select
+          in: query
+          description: Specifies which document fields to include or exclude
+          required: false
+          schema:
+            type: integer
+        - name: producer
+          in: query
+          description: 根据生产商查询
+          required: false
+          schema:
+            type: string
+        - name: model
+          in: query
+          description: 根据型号查询
+          required: false
+          schema:
+            type: string
+        - name: ns
+          in: query
+          required: false
+          description: 根据namespace查询
+          schema:
+            type: string
+        - name: ns_like
+          in: query
+          required: false
+          description: 根据namespace模糊查询
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A paged array of air conditioner hosts
+          headers:
+            X-Total-Count:
+              description: Total count of all hosts match the query
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AcHost"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      summary: Create an air conditioner host
+      operationId: createHost
+      tags:
+        - airConditioner
+      requestBody:
+        description: Air conditioner host to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AcHost"
+      responses:
+        "201":
+          description: The air conditioner host created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcHost"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /ac/hosts/{hostId}:
+    get:
+      summary: Get host by id
+      operationId: getHost
+      tags:
+        - airConditioner
+      parameters:
+        - name: hostId
+          in: path
+          required: true
+          description: The id of the air conditioner host to be retrieved
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The air conditioner host with given id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcHost"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    put:
+      summary: Update a air conditioner host by id
+      operationId: updateHost
+      tags:
+        - airConditioner
+      parameters:
+        - name: hostId
+          in: path
+          required: true
+          description: The id of air conditioner host
+          schema:
+            type: string
+      requestBody:
+        description: Air conditioner host to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AcHost"
+      responses:
+        "200":
+          description: The air conditioner host
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcHost"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    delete:
+      description: Delete a air conditioner host by id
+      operationId: deleteHost
+      tags:
+        - airConditioner
+      parameters:
+        - name: hostId
+          in: path
+          required: true
+          description: The air conditioner host
+          schema:
+            type: string
+      responses:
+        "204":
+          description: host deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /ac/hosts/{hostId}/snapshot:
+    get:
+      summary: Get air conditioner host snapshot by id
+      operationId: getHostSnapshot
+      tags:
+        - airConditioner
+      parameters:
+        - name: hostId
+          in: path
+          required: true
+          description: The id of the air conditioner host to be retrieved
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The air conditioner host snapshot
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcHostSnapshot"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /ac/hosts/{hostId}/records:
+    get:
+      summary: Get air conditioner host records
+      operationId: getHostRecords
+      tags:
+        - airConditioner
+      parameters:
+        - name: hostId
+          in: path
+          required: true
+          description: The id of the air conditioner host to be retrieved
+          schema:
+            type: string
+        - name: _limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: _offset
+          in: query
+          description: How many items to escape
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: _select
+          in: query
+          description: Specifies which document fields to include or exclude
+          required: false
+          schema:
+            type: integer
+        - name: at_gt
+          in: query
+          description: 返回采集时间大于某个时间戳的记录
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: at_lt
+          in: query
+          description: 返回采集时间小宇某个时间戳的记录
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: The air conditioner host record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcHostRecord"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /ac/pumps:
+    get:
+      summary: List all air conditioner pumps
+      operationId: listPumps
+      tags:
+        - airConditioner
+      parameters:
+        - name: _limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: _offset
+          in: query
+          description: How many items to escape
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: _sort
+          in: query
+          description: Fields to sort
+          required: false
+          schema:
+            type: string
+        - name: _select
+          in: query
+          description: Specifies which document fields to include or exclude
+          required: false
+          schema:
+            type: integer
+        - name: producer
+          in: query
+          description: 根据生产商查询
+          required: false
+          schema:
+            type: string
+        - name: model
+          in: query
+          description: 根据型号查询
+          required: false
+          schema:
+            type: string
+        - name: ns
+          in: query
+          required: false
+          description: 根据namespace查询
+          schema:
+            type: string
+        - name: ns_like
+          in: query
+          required: false
+          description: 根据namespace模糊查询
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A paged array of air conditioner pumps
+          headers:
+            X-Total-Count:
+              description: Total count of all pumps match the query
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AcPump"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      summary: Create an air conditioner pump
+      operationId: createPump
+      tags:
+        - airConditioner
+      requestBody:
+        description: Air conditioner pump to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AcPump"
+      responses:
+        "201":
+          description: The air conditioner pump created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcPump"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /ac/pumps/{pumpId}:
+    get:
+      summary: Get pump by id
+      operationId: getPump
+      tags:
+        - airConditioner
+      parameters:
+        - name: pumpId
+          in: path
+          required: true
+          description: The id of the air conditioner pump to be retrieved
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The air conditioner pump with given id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcPump"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    put:
+      summary: Update a air conditioner pump by id
+      operationId: updatePump
+      tags:
+        - airConditioner
+      parameters:
+        - name: pumpId
+          in: path
+          required: true
+          description: The id of air conditioner pump
+          schema:
+            type: string
+      requestBody:
+        description: Air conditioner pump to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AcPump"
+      responses:
+        "200":
+          description: The air conditioner pump
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcPump"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    delete:
+      description: Delete a air conditioner pump by id
+      operationId: deletePump
+      tags:
+        - airConditioner
+      parameters:
+        - name: pumpId
+          in: path
+          required: true
+          description: The air conditioner pump
+          schema:
+            type: string
+      responses:
+        "204":
+          description: pump deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /ac/pumps/{pumpId}/snapshot:
+    get:
+      summary: Get air conditioner pump snapshot by id
+      operationId: getPumpSnapshot
+      tags:
+        - airConditioner
+      parameters:
+        - name: pumpId
+          in: path
+          required: true
+          description: The id of the air conditioner pump to be retrieved
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The air conditioner pump snapshot
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcPumpSnapshot"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /ac/pumps/{pumpId}/records:
+    get:
+      summary: Get air conditioner pump records
+      operationId: getPumpRecords
+      tags:
+        - airConditioner
+      parameters:
+        - name: pumpId
+          in: path
+          required: true
+          description: The id of the air conditioner pump to be retrieved
+          schema:
+            type: string
+        - name: _limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: _offset
+          in: query
+          description: How many items to escape
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: _select
+          in: query
+          description: Specifies which document fields to include or exclude
+          required: false
+          schema:
+            type: integer
+        - name: at_gt
+          in: query
+          description: 返回采集时间大于某个时间戳的记录
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: at_lt
+          in: query
+          description: 返回采集时间小宇某个时间戳的记录
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: The air conditioner pump record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcPumpRecord"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /ac/towers:
+    get:
+      summary: List all air conditioner cooling towers
+      operationId: listTowers
+      tags:
+        - airConditioner
+      parameters:
+        - name: _limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: _offset
+          in: query
+          description: How many items to escape
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: _sort
+          in: query
+          description: Fields to sort
+          required: false
+          schema:
+            type: string
+        - name: _select
+          in: query
+          description: Specifies which document fields to include or exclude
+          required: false
+          schema:
+            type: integer
+        - name: producer
+          in: query
+          description: 根据生产商查询
+          required: false
+          schema:
+            type: string
+        - name: model
+          in: query
+          description: 根据型号查询
+          required: false
+          schema:
+            type: string
+        - name: ns
+          in: query
+          required: false
+          description: 根据namespace查询
+          schema:
+            type: string
+        - name: ns_like
+          in: query
+          required: false
+          description: 根据namespace模糊查询
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A paged array of air conditioner cooling towers
+          headers:
+            X-Total-Count:
+              description: Total count of all towers match the query
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AcTower"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      summary: Create an air conditioner cooling tower
+      operationId: createTower
+      tags:
+        - airConditioner
+      requestBody:
+        description: Air conditioner tower to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AcTower"
+      responses:
+        "201":
+          description: The air conditioner cooling tower created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcTower"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /ac/towers/{towerId}:
+    get:
+      summary: Get tower by id
+      operationId: getTower
+      tags:
+        - airConditioner
+      parameters:
+        - name: towerId
+          in: path
+          required: true
+          description: The id of the air conditioner cooling tower to be retrieved
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The air conditioner cooling tower with given id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcTower"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    put:
+      summary: Update a air conditioner cooling tower by id
+      operationId: updateTower
+      tags:
+        - airConditioner
+      parameters:
+        - name: towerId
+          in: path
+          required: true
+          description: The id of air conditioner cooling tower
+          schema:
+            type: string
+      requestBody:
+        description: Air conditioner tower to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AcTower"
+      responses:
+        "200":
+          description: The air conditioner cooling tower
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcTower"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    delete:
+      description: Delete a air conditioner cooling tower by id
+      operationId: deleteTower
+      tags:
+        - airConditioner
+      parameters:
+        - name: towerId
+          in: path
+          required: true
+          description: The air conditioner cooling tower
+          schema:
+            type: string
+      responses:
+        "204":
+          description: tower deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /ac/towers/{towerId}/snapshot:
+    get:
+      summary: Get air conditioner tower snapshot by id
+      operationId: getTowerSnapshot
+      tags:
+        - airConditioner
+      parameters:
+        - name: towerId
+          in: path
+          required: true
+          description: The id of the air conditioner tower to be retrieved
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The air conditioner tower snapshot
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcTowerSnapshot"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /ac/towers/{towerId}/records:
+    get:
+      summary: Get air conditioner tower records
+      operationId: getTowerRecords
+      tags:
+        - airConditioner
+      parameters:
+        - name: towerId
+          in: path
+          required: true
+          description: The id of the air conditioner tower to be retrieved
+          schema:
+            type: string
+        - name: _limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: _offset
+          in: query
+          description: How many items to escape
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: _select
+          in: query
+          description: Specifies which document fields to include or exclude
+          required: false
+          schema:
+            type: integer
+        - name: at_gt
+          in: query
+          description: 返回采集时间大于某个时间戳的记录
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: at_lt
+          in: query
+          description: 返回采集时间小宇某个时间戳的记录
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: The air conditioner tower record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcTowerRecord"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /statistics:
+    get:
+      summary: Get statistics
+      operationId: getStatistics
+      tags:
+        - report
+      parameters:
+        - name: _select
+          in: query
+          description: Specifies which document fields to include or exclude
+          required: false
+          schema:
+            type: integer
+        - name: brand
+          in: query
+          description: 品牌
+          required: false
+          schema:
+            type: string
+        - name: target
+          in: query
+          description: 设备id
+          required: false
+          schema:
+            type: string
+        - name: targetType
+          in: query
+          description: 设备类别
+          required: false
+          schema:
+            type: string
+            enum: [AC_CLUSTER,AC_HOST,AC_TOWER,AC_PUMP]
+            description: 空调机组、空调主机、空调冷却塔、空调水泵
+        - name: producer
+          in: query
+          description: 根据生产商查询
+          required: false
+          schema:
+            type: string
+        - name: model
+          in: query
+          description: 根据型号查询
+          required: false
+          schema:
+            type: string
+        - name: ns
+          in: query
+          required: false
+          description: 根据namespace查询
+          schema:
+            type: string
+        - name: ns_like
+          in: query
+          required: false
+          description: 根据namespace模糊查询
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Statistics"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /charts/power:
+    get:
+      summary: Get power chart
+      operationId: getPowerChart
+      tags:
+        - report
+      parameters:
+        - name: _select
+          in: query
+          description: Specifies which document fields to include or exclude
+          required: false
+          schema:
+            type: integer
+        - name: _group
+          in: query
+          description: 这里可以用时间group
+          required: false
+          schema:
+            type: string
+        - name: target
+          in: query
+          description: 设备id
+          required: false
+          schema:
+            type: string
+        - name: targetType
+          in: query
+          description: 设备类别
+          required: false
+          schema:
+            type: string
+            enum: [AC_CLUSTER,AC_HOST,AC_TOWER,AC_PUMP]
+            description: 空调机组、空调主机、空调冷却塔、空调水泵
+        - name: brand
+          in: query
+          description: 品牌
+          required: false
+          schema:
+            type: string
+        - name: producer
+          in: query
+          description: 根据生产商查询
+          required: false
+          schema:
+            type: string
+        - name: model
+          in: query
+          description: 根据型号查询
+          required: false
+          schema:
+            type: string
+        - name: ns
+          in: query
+          required: false
+          description: 根据namespace查询
+          schema:
+            type: string
+        - name: ns_like
+          in: query
+          required: false
+          description: 根据namespace模糊查询
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Power chart，包括用电量统计和负荷
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PowerChart"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /strategies:
+    get:
+      summary: List all strategies
+      operationId: listStrategies
+      tags:
+        - operation
+      parameters:
+        - name: _limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: _offset
+          in: query
+          description: How many items to escape
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: _sort
+          in: query
+          description: Fields to sort
+          required: false
+          schema:
+            type: string
+        - name: _select
+          in: query
+          description: Specifies which document fields to include or exclude
+          required: false
+          schema:
+            type: integer
+        - name: type
+          in: query
+          description: "类别: 空调系统/锅炉系统"
+          required: false
+          schema:
+            type: string
+            enum: ["AC", "BOILER"]
+        - name: target
+          in: query
+          description: 设备id
+          required: false
+          schema:
+            type: string
+        - name: ns
+          in: query
+          required: false
+          description: 根据namespace查询
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A paged array of strategies
+          headers:
+            X-Total-Count:
+              description: Total count of all strategies match the query
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Strategy"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      summary: Create an strategy
+      operationId: createStrategy
+      tags:
+        - operation
+      requestBody:
+        description: A strategy to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Strategy"
+      responses:
+        "201":
+          description: The strategy created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Strategy"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /strategies/{strategyId}:
+    get:
+      summary: Get strategy by id
+      operationId: getStrategy
+      tags:
+        - operation
+      parameters:
+        - name: strategyId
+          in: path
+          required: true
+          description: The id of the strategy to be retrieved
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The strategy with given id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Strategy"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    put:
+      summary: Update a strategy by id
+      operationId: updateStrategy
+      tags:
+        - operation
+      parameters:
+        - name: strategyId
+          in: path
+          required: true
+          description: The id of strategy
+          schema:
+            type: string
+      requestBody:
+        description: Air conditioner strategy to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Strategy"
+      responses:
+        "200":
+          description: The strategy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Strategy"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    delete:
+      description: Delete a strategy by id
+      operationId: deleteStrategy
+      tags:
+        - operation
+      parameters:
+        - name: strategyId
+          in: path
+          required: true
+          description: The strategy
+          schema:
+            type: string
+      responses:
+        "204":
+          description: strategy deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /models:
+    get:
+      summary: 返回品牌列表
+      operationId: listModels
+      tags:
+        - model
+      responses:
+        "200":
+          description: A paged array of model
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /producers:
+    get:
+      summary: 返回生产商列表
+      operationId: listProducers
+      tags:
+        - producer
+      responses:
+        "200":
+          description: A paged array of vehicle producer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Producer"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+security:
+  - bearerAuth: []
+
+components:
+  responses:
+    NoContent:
+      description: The resource was deleted successfully.
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Err"
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Err"
+    InternalError:
+      description: unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Err"
+    BasRequest:
+      description: bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Err"
+
+  schemas:
+
+    AcCluster:
+      type: object
+      description: 空调机组
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+          format: date
+          description: 创建时间
+        updatedAt:
+          type: string
+          format: date
+          description: 更新时间
+        capacity:
+          type: integer
+          format: int32
+          description: 机组容量
+        brands:
+          type: string
+          description: 机组品牌
+        mode:
+          type: string
+          description: 型号
+        producer:
+          type: string
+          description: 生产厂家
+
+    AcClusterSnapshot:
+      type: object
+      description: 空调机组快照
+      properties:
+        id:
+          type: string
+        updatedAt:
+          type: string
+          format: date
+          description: 最后一次数据更新时间
+        open:
+          type: boolean
+          description: 机组开关机状态
+        load:
+          type: number
+          format: float
+          description: 实时负荷
+        mode:
+          type: string
+          enum: [COOL,HEAT]
+          description: "机组模式:制冷、制热"
+        broken:
+          type: boolean
+          description: 机组是否故障
+        remote:
+          type: boolean
+          description: 机组是否远程
+        evaporatorWaterFlow:
+          type: boolean
+          description: 蒸发器是否有水流
+        evaporatorInTemp:
+          type: number
+          description: 蒸发器回水温度
+        evaporatorOutTemp:
+          type: number
+          description: 蒸发器出水温度
+        refrigerationPumpOn:
+          type: boolean
+          description: 冷冻泵联动开启
+
+    AcClusterRecord:
+      type: object
+      description: 空调机组日志
+      properties:
+        id:
+          type: string
+        at:
+          type: string
+          format: date
+          description: 日志采集时间
+        open:
+          type: boolean
+          description: 机组开关机状态
+        load:
+          type: number
+          format: float
+          description: 实时负荷
+        mode:
+          type: string
+          enum: [COOL,HEAT]
+          description: "机组模式:制冷、制热"
+        broken:
+          type: boolean
+          description: 机组是否故障
+        remote:
+          type: boolean
+          description: 机组是否远程
+        evaporatorWaterFlow:
+          type: boolean
+          description: 蒸发器是否有水流
+        evaporatorInTemp:
+          type: number
+          description: 蒸发器回水温度
+        evaporatorOutTemp:
+          type: number
+          description: 蒸发器出水温度
+        refrigerationPumpOn:
+          type: boolean
+          description: 冷冻泵联动开启
+
+    AcHost:
+      type: object
+      description: 主机
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+          format: date
+          description: 创建时间
+        updatedAt:
+          type: string
+          format: date
+          description: 更新时间
+        brands:
+          type: string
+          description: 机组品牌
+        ratedPower:
+          type: integer
+          description: 额定功率(KW)
+        ratedCapacity:
+          type: integer
+          description: 额定制冷量(RT)
+        mode:
+          type: string
+          description: 型号
+        producer:
+          type: string
+          description: 生产厂家
+        position:
+          type: string
+          description: 安装位置
+
+    AcHostSnapshot:
+      type: object
+      description: 空调机组快照
+      properties:
+        id:
+          type: string
+        updatedAt:
+          type: string
+          format: date
+          description: 最后一次数据更新时间
+        status:
+          type: string
+          enum: [RUNNING,STOP]
+          description: 运行状态
+        load:
+          type: number
+          format: float
+          description: 实时负荷/出力程度
+        mode:
+          type: string
+          enum: [COOL,HEAT]
+          description: "机组模式:制冷、制热"
+        broken:
+          type: boolean
+          description: 是否故障
+        operationHours:
+          type: integer
+          description: 运行时间
+        power:
+          type: number
+          description: 实时功率
+        energyToday:
+          type: number
+          description: 今日用电量
+        inTemp:
+          type: number
+          description: 进水温度
+        outTemp:
+          type: number
+          description: 出水温度
+        capacity:
+          type: number
+          description: 实时制冷量
+
+    AcHostRecord:
+      type: object
+      description: 空调主机日志
+      properties:
+        id:
+          type: string
+        at:
+          type: string
+          format: date
+          description: 日志采集时间
+        status:
+          type: string
+          enum: [RUNNING,STOP]
+          description: 运行状态
+        load:
+          type: number
+          format: float
+          description: 实时负荷/出力程度
+        mode:
+          type: string
+          enum: [COOL,HEAT]
+          description: "机组模式:制冷、制热"
+        broken:
+          type: boolean
+          description: 是否故障
+        operationHours:
+          type: integer
+          description: 运行时间
+        power:
+          type: number
+          description: 实时功率
+        energyToday:
+          type: number
+          description: 今日用电量
+        inTemp:
+          type: number
+          description: 进水温度
+        outTemp:
+          type: number
+          description: 出水温度
+        capacity:
+          type: number
+          description: 实时制冷量
+
+    AcPump:
+      type: object
+      description: 空调水泵
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+          format: date
+          description: 创建时间
+        updatedAt:
+          type: string
+          format: date
+          description: 更新时间
+        brands:
+          type: string
+          description: 机组品牌
+        ratedPower:
+          type: integer
+          description: 额定功率(KW)
+        ratedFlow:
+          $ref: "#/components/schemas/Range"
+        head:
+          $ref: "#/components/schemas/Range"
+        mode:
+          type: string
+          description: 型号
+        producer:
+          type: string
+          description: 生产厂家
+        position:
+          type: string
+          description: 安装位置
+
+    AcPumpSnapshot:
+      type: object
+      description: 空调水泵快照
+      properties:
+        id:
+          type: string
+        updatedAt:
+          type: string
+          format: date
+          description: 最后一次数据更新时间
+        status:
+          type: string
+          enum: [RUNNING,STOP]
+          description: 运行状态
+        load:
+          type: number
+          format: float
+          description: 实时负荷/出力程度
+        broken:
+          type: boolean
+          description: 是否故障
+        operationHours:
+          type: integer
+          description: 运行时间
+        power:
+          type: number
+          description: 实时功率
+        energyToday:
+          type: number
+          description: 今日用电量
+        pressure:
+          type: number
+          description: 实时水压
+        traffic:
+          type: number
+          description: 实时流量
+        recycles:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecycledWater"
+
+    AcPumpRecord:
+      type: object
+      description: 空调水泵日志
+      properties:
+        id:
+          type: string
+        at:
+          type: string
+          format: date
+          description: 日志采集时间
+        status:
+          type: string
+          enum: [RUNNING,STOP]
+          description: 运行状态
+        load:
+          type: number
+          format: float
+          description: 实时负荷/出力程度
+        broken:
+          type: boolean
+          description: 是否故障
+        operationHours:
+          type: integer
+          description: 运行时间
+        power:
+          type: number
+          description: 实时功率
+        energyToday:
+          type: number
+          description: 今日用电量
+        pressure:
+          type: number
+          description: 实时水压
+        traffic:
+          type: number
+          description: 实时流量
+        recycles:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecycledWater"
+
+    AcTower:
+      type: object
+      description: 空调冷却塔
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+          format: date
+          description: 创建时间
+        updatedAt:
+          type: string
+          format: date
+          description: 更新时间
+        brands:
+          type: string
+          description: 机组品牌
+        ratedPower:
+          type: integer
+          description: 额定功率(KW)
+        mode:
+          type: string
+          description: 型号
+        producer:
+          type: string
+          description: 生产厂家
+        position:
+          type: string
+          description: 安装位置
+
+    AcTowerSnapshot:
+      type: object
+      description: 空调冷却塔快照
+      properties:
+        id:
+          type: string
+        updatedAt:
+          type: string
+          format: date
+          description: 最后一次数据更新时间
+        status:
+          type: string
+          enum: [RUNNING,STOP]
+          description: 运行状态
+        load:
+          type: number
+          format: float
+          description: 实时负荷/出力程度
+        broken:
+          type: boolean
+          description: 是否故障
+        operationHours:
+          type: integer
+          description: 运行时间
+        power:
+          type: number
+          description: 实时功率
+        energyToday:
+          type: number
+          description: 今日用电量
+        inTemp:
+          type: number
+          description: 进水温度
+        outTemp:
+          type: number
+          description: 出水温度
+
+    AcTowerRecord:
+      type: object
+      description: 空调水泵日志
+      properties:
+        id:
+          type: string
+        at:
+          type: string
+          format: date
+          description: 日志采集时间
+        status:
+          type: string
+          enum: [RUNNING,STOP]
+          description: 运行状态
+        load:
+          type: number
+          format: float
+          description: 实时负荷/出力程度
+        broken:
+          type: boolean
+          description: 是否故障
+        operationHours:
+          type: integer
+          description: 运行时间
+        power:
+          type: number
+          description: 实时功率
+        energyToday:
+          type: number
+          description: 今日用电量
+        inTemp:
+          type: number
+          description: 进水温度
+        outTemp:
+          type: number
+          description: 出水温度
+
+    Statistics:
+      properties:
+        totalCapacity:
+          type: integer
+          description: 总装机容量(KVA)
+        feeLastMonth:
+          type: integer
+          description: 上月电费
+        feeThisMonth:
+          type: integer
+          description: 上月电费
+        load:
+          type: number
+          description: 实时负荷
+        loadToday:
+          $ref: "#/components/schemas/Range"
+        energyThisMonth:
+          $ref: "#/components/schemas/EnergyStructure"
+        energyLastMonth:
+          $ref: "#/components/schemas/EnergyStructure"
+
+    EnergyStructure:
+      type: object
+      properties:
+        valley:
+          type: integer
+        normal:
+          type: integer
+        peak:
+          type: integer
+        sharp:
+          type: integer
+
+    Producer:
+      type: object
+      description: "生产商"
+      properties:
+        name:
+          type: string
+          description: 生产商名称
+        models:
+          type: string
+          description: 拥有型号
+          items:
+            type: string
+
+    Range:
+      type: object
+      properties:
+        min:
+          type: number
+        max:
+          type: number
+
+    RecycledWater:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [FREEZE, COOL, SUPPLY]
+          description: 冷冻水、冷却水、补水
+
+    Strategy:
+      type: object
+      properties:
+        target:
+          type: string
+        content:
+          type: string
+        start:
+          type: string
+          format: date
+          description: 开始时间
+        end:
+          type: string
+          format: date
+          description: 结束时间
+
+    PowerChart:
+      type: object
+      properties:
+        ## metrics
+        fee:
+          type: number
+          description: 费用统计
+        energy:
+          type: number
+          description: 用电量统计
+        load:
+          type: number
+          description: 功率统计(平均值)
+        ## dimension
+        time:
+          type: string
+          format: date
+          description: 统计时间，最小粒度小时
+        target:
+          type: string
+          description: 设备id
+        targetType:
+          type: string
+          enum: [AC_CLUSTER,AC_HOST,AC_TOWER,AC_PUMP]
+          description: 空调机组、空调主机、空调冷却塔、空调水泵
+        brands:
+          type: string
+          description: 机组品牌
+        mode:
+          type: string
+          description: 型号
+        producer:
+          type: string
+          description: 生产厂家
+
+    Err:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
