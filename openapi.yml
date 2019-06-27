@@ -1176,10 +1176,10 @@ paths:
         "500":
           $ref: "#/components/responses/InternalError"
 
-  /charts/power:
+  /aggs/power:
     get:
-      summary: Get power chart
-      operationId: getPowerChart
+      summary: List power aggregation
+      operationId: listPowerAgg
       tags:
         - report
       parameters:
@@ -1241,11 +1241,13 @@ paths:
             type: string
       responses:
         "200":
-          description: Power chart，包括用电量统计和负荷
+          description: Power aggregation，包括用电量统计和负荷
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PowerChart"
+                type: array
+                items:
+                  $ref: "#/components/schemas/PowerAggregation"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "500":
@@ -2031,7 +2033,7 @@ components:
           format: date
           description: 结束时间
 
-    PowerChart:
+    PowerAggregation:
       type: object
       properties:
         ## metrics

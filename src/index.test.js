@@ -3,36 +3,45 @@ import SDK from "./index";
 const sdk = new SDK({ base: "http://localhost:3000" });
 
 describe("## SDK vehicle", () => {
-  it("should list pets", async () => {
-    const result = await sdk.pet.listPets();
+  it("should list clusters", async () => {
+    const result = await sdk.airConditioner.listClusters();
+
     expect(result.body.length).toBe(100);
   });
 
-  let pet;
+  it("should list hosts", async () => {
+    const result = await sdk.airConditioner.listHosts();
 
-  it("should create pet", async () => {
-    const newPet = {
-      name: "jam",
-      tag: "DOG",
-      owner: "lily",
-    };
-
-    const result = await sdk.pet.createPet({ body: newPet });
-    pet = result.body;
-    expect(pet).toMatchObject(newPet);
+    expect(result.body.length).toBe(100);
   });
 
-  it("should get pet", async () => {
-    const result = await sdk.pet.showPetById({
-      petId: pet.id,
-    });
-    expect(result.body.id).toBe(pet.id);
+  it("should list pumps", async () => {
+    const result = await sdk.airConditioner.listPumps();
+
+    expect(result.body.length).toBe(100);
   });
 
-  it("should delete pet", async () => {
-    const result = await sdk.pet.deletePet({
-      petId: pet.id,
-    });
-    expect(result.body).toEqual({});
+  it("should list towers", async () => {
+    const result = await sdk.airConditioner.listTowers();
+
+    expect(result.body.length).toBe(100);
+  });
+
+  it("should list strategies", async () => {
+    const result = await sdk.operation.listStrategies();
+
+    expect(result.body.length).toBe(100);
+  });
+
+  it("should list statistics ", async () => {
+    const result = await sdk.report.getStatistics();
+
+    expect(result.body.length).toBe(100);
+  });
+
+  it("should list power aggs", async () => {
+    const result = await sdk.report.listPowerAgg();
+
+    expect(result.body.length).toBe(100);
   });
 });

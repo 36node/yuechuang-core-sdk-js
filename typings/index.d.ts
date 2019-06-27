@@ -140,9 +140,9 @@ declare namespace SDK {
      */
     getStatistics(req: GetStatisticsRequest): Promise<GetStatisticsResponse>;
     /**
-     * Get power chart
+     * List power aggregation
      */
-    getPowerChart(req: GetPowerChartRequest): Promise<GetPowerChartResponse>;
+    listPowerAgg(req: ListPowerAggRequest): Promise<ListPowerAggResponse>;
   }
   export interface OperationAPI {
     /**
@@ -518,7 +518,7 @@ declare namespace SDK {
     body: Statistics;
   };
 
-  type GetPowerChartRequest = {
+  type ListPowerAggRequest = {
     query: {
       select?: number;
       group?: string;
@@ -534,8 +534,8 @@ declare namespace SDK {
     };
   };
 
-  type GetPowerChartResponse = {
-    body: PowerChart;
+  type ListPowerAggResponse = {
+    body: Array<PowerAggregation>;
   };
 
   type ListStrategiesRequest = {
@@ -816,7 +816,7 @@ declare namespace SDK {
     end: string;
   };
 
-  type PowerChart = {
+  type PowerAggregation = {
     fee: number;
     energy: number;
     load: number;
