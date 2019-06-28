@@ -1,4 +1,4 @@
-const TargetType = {
+const TargetTypes = {
   AC_CLUSTER: "空调机组",
   AC_HOST: "空调主机",
   AC_TOWER: "空调冷却塔",
@@ -6,5 +6,5 @@ const TargetType = {
 };
 
 module.exports = {
-  TargetType,
+  TargetTypes,
 };

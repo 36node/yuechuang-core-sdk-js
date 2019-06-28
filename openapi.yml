@@ -1209,6 +1209,20 @@ paths:
             type: string
             enum: [AC_CLUSTER,AC_HOST,AC_TOWER,AC_PUMP]
             description: 空调机组、空调主机、空调冷却塔、空调水泵
+        - name: time_gt
+          in: query
+          description: 开始时间
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: time_lt
+          in: query
+          description: 结束时间
+          required: false
+          schema:
+            type: string
+            format: date
         - name: brand
           in: query
           description: 品牌
@@ -2051,6 +2065,18 @@ components:
           type: string
           format: date
           description: 统计时间，最小粒度小时
+        year:
+          type: string
+          description: 年
+        month:
+          type: string
+          description: 月
+        day:
+          type: string
+          description: 日
+        hour:
+          type: string
+          description: 小时
         target:
           type: string
           description: 设备id
@@ -2061,7 +2087,7 @@ components:
         brands:
           type: string
           description: 机组品牌
-        mode:
+        model:
           type: string
           description: 型号
         producer:

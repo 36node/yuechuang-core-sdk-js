@@ -1,4 +1,5 @@
 import SDK from "./index";
+import moment from "moment";
 
 const sdk = new SDK({ base: "http://localhost:3000" });
 
@@ -40,8 +41,18 @@ describe("## SDK vehicle", () => {
   });
 
   it("should list power aggs", async () => {
-    const result = await sdk.report.listPowerAgg();
+    const result = await sdk.report.listPowerAgg({
+      query: {
+        group: "month",
+        startAt: moment()
+          .startOf("year")
+          .toISOString(),
+        endAt: moment().toISOString(),
+      },
+    });
 
-    expect(result.body.length).toBe(100);
+    console.log(result);
+
+    // expect(result.body.length).toBe(100);
   });
 });

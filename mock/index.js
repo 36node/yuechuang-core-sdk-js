@@ -4,17 +4,10 @@ const pumpsMockFun = require("./ac/pumps");
 const towerMockFun = require("./ac/towers");
 const modelMockFun = require("./models");
 const producerMockFun = require("./producers");
-const powerAggMockFun = require("./aggs/power");
 const statisticsMockFun = require("./statistics");
 const strategiyMockFun = require("./strategies");
 
-const myRouter = (req, res, next) => {
-  /** example */
-  // if (req.path === "/sessions" && req.method === "POST") {
-  //   req.body.token = TOKEN;
-  // }
-  next();
-};
+const powerAggRouterFun = require("./aggs/power");
 
 const rewrites = {
   "/ac/clusters*": "/clusters$1",
@@ -23,6 +16,34 @@ const rewrites = {
   "/ac/pumps*": "/pumps$1",
   "/aggs/power*": "/powerAggs$1",
 };
+
+const powerAggRouter = powerAggRouterFun([
+  {
+    id: "host1",
+    type: "AC_HOST",
+    producer: "远大空调有限公司",
+  },
+  {
+    id: "host2",
+    type: "AC_HOST",
+    producer: "远大空调有限公司",
+  },
+  {
+    id: "cluster1",
+    type: "AC_CLUSTER",
+    producer: "日立中央空调",
+  },
+  {
+    id: "tower1",
+    type: "AC_TOWER",
+    producer: "海尔",
+  },
+  {
+    id: "pump1",
+    type: "AC_PUMP",
+    producer: "格力",
+  },
+]);
 
 /**
  * mock
@@ -41,7 +62,6 @@ const mock = () => ({
     towers: towerMockFun({}),
     models: modelMockFun({}),
     producers: producerMockFun({}),
-    powerAggs: powerAggMockFun({}),
     statistics: statisticsMockFun({}),
     strategies: strategiyMockFun({}),
   },
@@ -51,7 +71,7 @@ const mock = () => ({
    */
   rewrites,
 
-  routers: [myRouter],
+  routers: [powerAggRouter],
 });
 
 module.exports = mock;

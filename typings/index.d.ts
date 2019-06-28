@@ -526,6 +526,10 @@ declare namespace SDK {
       filter: {
         target?: string;
         targetType?: string;
+        time: {
+          $gt?: string;
+          $lt?: string;
+        };
         brand?: string;
         producer?: string;
         model?: string;
@@ -821,10 +825,14 @@ declare namespace SDK {
     energy: number;
     load: number;
     time: string;
+    year: string;
+    month: string;
+    day: string;
+    hour: string;
     target: string;
     targetType: string;
     brands: string;
-    mode: string;
+    model: string;
     producer: string;
   };
 
