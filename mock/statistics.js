@@ -1,7 +1,7 @@
 const faker = require("faker");
 const _ = require("lodash");
 
-const generator = ({ count = 1 }) => {
+const generator = ({ count = 100 }) => {
   return _.range(count).map(i => {
     return {
       totalCapacity: 2419,
