@@ -4,7 +4,7 @@ const _ = require("lodash");
 const generator = ({ count = 2 }) => {
   return _.range(count).map(i => {
     return {
-      id: i,
+      id: `tower${i}`,
       createdAt: faker.date.past(), // 创建时间
       updatedAt: faker.date.past(), // 更新时间
       brands: faker.random.word(),

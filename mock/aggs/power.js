@@ -69,6 +69,7 @@ function genRouter(targets = []) {
         time_gt = moment().startOf("day"),
         time_lt = moment(),
         target,
+        targetType,
       } = query;
 
       // 默认获取今日数据
@@ -82,6 +83,10 @@ function genRouter(targets = []) {
       // filter 数据
       if (target) {
         chain = chain.filter(r => r.target === target);
+      }
+
+      if (targetType) {
+        chain = chain.filter(r => r.targetType === targetType);
       }
 
       // group 数据

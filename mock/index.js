@@ -18,33 +18,33 @@ const rewrites = {
   "/aggs/power*": "/powerAggs$1",
 };
 
-const defaultTargets = [
-  {
-    id: "host1",
-    type: "AC_HOST",
-    producer: "远大空调有限公司",
-  },
-  {
-    id: "host2",
-    type: "AC_HOST",
-    producer: "远大空调有限公司",
-  },
-  {
-    id: "cluster1",
-    type: "AC_CLUSTER",
-    producer: "日立中央空调",
-  },
-  {
-    id: "tower1",
-    type: "AC_TOWER",
-    producer: "海尔",
-  },
-  {
-    id: "pump1",
-    type: "AC_PUMP",
-    producer: "格力",
-  },
-];
+// const defaultTargets = [
+//   {
+//     id: "host1",
+//     type: "AC_HOST",
+//     producer: "远大空调有限公司",
+//   },
+//   {
+//     id: "host2",
+//     type: "AC_HOST",
+//     producer: "远大空调有限公司",
+//   },
+//   {
+//     id: "cluster1",
+//     type: "AC_CLUSTER",
+//     producer: "日立中央空调",
+//   },
+//   {
+//     id: "tower1",
+//     type: "AC_TOWER",
+//     producer: "海尔",
+//   },
+//   {
+//     id: "pump1",
+//     type: "AC_PUMP",
+//     producer: "格力",
+//   },
+// ];
 
 /**
  * mock
@@ -52,7 +52,19 @@ const defaultTargets = [
  * @param {object} opt mock options
  * @param {number} opt.count how many pets to be generated
  */
-const mock = ({ targets = defaultTargets }) => {
+const mock = ({}) => {
+  const clusters = clusterMockFun({});
+  const hosts = hostMockFun({});
+  const pumps = pumpsMockFun({});
+  const towers = towerMockFun({});
+
+  const targets = [
+    ...clusters.map(c => ({ ...c, type: "AC_CLUSTER" })),
+    ...hosts.map(h => ({ ...h, type: "AC_HOST" })),
+    ...pumps.map(p => ({ ...p, type: "AC_PUMP" })),
+    ...towers.map(t => ({ ...t, type: "AC_TOWER" })),
+  ];
+
   const powerAggRouter = powerAggRouterFun(targets);
 
   return {
@@ -60,10 +72,10 @@ const mock = ({ targets = defaultTargets }) => {
      * mock data
      */
     db: {
-      clusters: clusterMockFun({}),
-      hosts: hostMockFun({}),
-      pumps: pumpsMockFun({}),
-      towers: towerMockFun({}),
+      clusters,
+      hosts,
+      pumps,
+      towers,
       models: modelMockFun({}),
       producers: producerMockFun({}),
       statistics: statisticsMockFun({}),

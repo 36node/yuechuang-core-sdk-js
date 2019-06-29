@@ -7,7 +7,7 @@ describe("## SDK vehicle", () => {
   it("should list clusters", async () => {
     const result = await sdk.airConditioner.listClusters();
 
-    expect(result.body.id).toBe(1);
+    expect(result.body.length).toBe(1);
   });
 
   it("should list hosts", async () => {
@@ -38,6 +38,14 @@ describe("## SDK vehicle", () => {
     const result = await sdk.report.getStatistics();
 
     expect(result.body.length).toBe(100);
+  });
+
+  it("should get cluster", async () => {
+    const result = await sdk.airConditioner.getCluster({
+      clusterId: "cluster1",
+    });
+
+    console.log(result);
   });
 
   it("should list power aggs", async () => {
