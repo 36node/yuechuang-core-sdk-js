@@ -18,7 +18,7 @@ const rewrites = {
   "/aggs/power*": "/powerAggs$1",
 };
 
-const powerAggRouter = powerAggRouterFun([
+const defaultTargets = [
   {
     id: "host1",
     type: "AC_HOST",
@@ -44,7 +44,7 @@ const powerAggRouter = powerAggRouterFun([
     type: "AC_PUMP",
     producer: "格力",
   },
-]);
+];
 
 /**
  * mock
@@ -52,28 +52,33 @@ const powerAggRouter = powerAggRouterFun([
  * @param {object} opt mock options
  * @param {number} opt.count how many pets to be generated
  */
-const mock = () => ({
-  /**
-   * mock data
-   */
-  db: {
-    clusters: clusterMockFun({}),
-    hosts: hostMockFun({}),
-    pumps: pumpsMockFun({}),
-    towers: towerMockFun({}),
-    models: modelMockFun({}),
-    producers: producerMockFun({}),
-    statistics: statisticsMockFun({}),
-    strategies: strategiyMockFun({}),
-    weather: weatherMockFun({}),
-  },
+const mock = ({ targets = defaultTargets }) => {
+  const powerAggRouter = powerAggRouterFun(targets);
 
-  /**
-   * rewrite
-   */
-  rewrites,
+  return {
+    /**
+     * mock data
+     */
+    db: {
+      clusters: clusterMockFun({}),
+      hosts: hostMockFun({}),
+      pumps: pumpsMockFun({}),
+      towers: towerMockFun({}),
+      models: modelMockFun({}),
+      producers: producerMockFun({}),
+      statistics: statisticsMockFun({}),
+      strategies: strategiyMockFun({}),
+      powerAggs: {},
+      weather: weatherMockFun({}),
+    },
 
-  routers: [powerAggRouter],
-});
+    /**
+     * rewrite
+     */
+    rewrites,
+
+    routers: [powerAggRouter],
+  };
+};
 
 module.exports = mock;
