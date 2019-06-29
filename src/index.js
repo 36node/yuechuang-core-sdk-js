@@ -93,7 +93,8 @@ export default class SDK {
     updateCluster: (req = {}) => {
       const { clusterId, headers, body } = req;
 
-      if (!clusterId) throw new Error("clusterId is required for updateCluster");
+      if (!clusterId)
+        throw new Error("clusterId is required for updateCluster");
       if (!body) throw new Error("requetBody is required for updateCluster");
 
       return fetch(`${this.base}/ac/clusters/${clusterId}`, {
@@ -111,7 +112,8 @@ export default class SDK {
     deleteCluster: (req = {}) => {
       const { clusterId, headers } = req;
 
-      if (!clusterId) throw new Error("clusterId is required for deleteCluster");
+      if (!clusterId)
+        throw new Error("clusterId is required for deleteCluster");
 
       return fetch(`${this.base}/ac/clusters/${clusterId}`, {
         method: "delete",
@@ -127,7 +129,8 @@ export default class SDK {
     getClusterSnapshot: (req = {}) => {
       const { clusterId, headers } = req;
 
-      if (!clusterId) throw new Error("clusterId is required for getClusterSnapshot");
+      if (!clusterId)
+        throw new Error("clusterId is required for getClusterSnapshot");
 
       return fetch(`${this.base}/ac/clusters/${clusterId}/snapshot`, {
         method: "get",
@@ -143,7 +146,8 @@ export default class SDK {
     getClusterRecords: (req = {}) => {
       const { clusterId, query, headers } = req;
 
-      if (!clusterId) throw new Error("clusterId is required for getClusterRecords");
+      if (!clusterId)
+        throw new Error("clusterId is required for getClusterRecords");
 
       return fetch(`${this.base}/ac/clusters/${clusterId}/records`, {
         method: "get",
@@ -577,7 +581,8 @@ export default class SDK {
     getStrategy: (req = {}) => {
       const { strategyId, headers } = req;
 
-      if (!strategyId) throw new Error("strategyId is required for getStrategy");
+      if (!strategyId)
+        throw new Error("strategyId is required for getStrategy");
 
       return fetch(`${this.base}/strategies/${strategyId}`, {
         method: "get",
@@ -593,7 +598,8 @@ export default class SDK {
     updateStrategy: (req = {}) => {
       const { strategyId, headers, body } = req;
 
-      if (!strategyId) throw new Error("strategyId is required for updateStrategy");
+      if (!strategyId)
+        throw new Error("strategyId is required for updateStrategy");
       if (!body) throw new Error("requetBody is required for updateStrategy");
 
       return fetch(`${this.base}/strategies/${strategyId}`, {
@@ -611,7 +617,8 @@ export default class SDK {
     deleteStrategy: (req = {}) => {
       const { strategyId, headers } = req;
 
-      if (!strategyId) throw new Error("strategyId is required for deleteStrategy");
+      if (!strategyId)
+        throw new Error("strategyId is required for deleteStrategy");
 
       return fetch(`${this.base}/strategies/${strategyId}`, {
         method: "delete",
