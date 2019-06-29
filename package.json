@@ -1,6 +1,6 @@
 {
   "name": "@36node/yuechuang-core-sdk",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Yuechuang Core Service SDK for Javascript.",
   "repository": {
     "url": "36node/yuechuang-core-sdk",
