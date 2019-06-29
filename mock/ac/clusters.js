@@ -1,14 +1,20 @@
 const faker = require("faker");
 const _ = require("lodash");
 
-const generator = ({ count = 100 }) => {
-  return _.range(count).map(i => {
-    return {
-      id: faker.random.uuid(),
-      createdAt: faker.date.past(), // 创建时间
-      updatedAt: faker.date.past(), // 更新时间
-    };
-  });
+const generator = () => {
+  return {
+    id: 1,
+    updatedAt: faker.date.recent(),
+    open: faker.random.boolean(),
+    load: faker.random.number({ min: 0, max: 100 }),
+    mode: faker.random.arrayElement(["COOL", "HEAT"]),
+    broken: faker.random.boolean(),
+    remote: faker.random.boolean(),
+    evaporatorWaterFlow: faker.random.boolean(),
+    evaporatorInTemp: faker.random.number({ min: 0, max: 100 }),
+    evaporatorOutTemp: faker.random.number({ min: 0, max: 100 }),
+    refrigerationPumpOn: faker.random.boolean(),
+  };
 };
 
 module.exports = generator;

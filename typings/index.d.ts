@@ -12,6 +12,7 @@ declare class SDK {
   operation: SDK.OperationAPI;
   model: SDK.ModelAPI;
   producer: SDK.ProducerAPI;
+  weather: SDK.WeatherAPI;
 }
 
 declare namespace SDK {
@@ -177,6 +178,12 @@ declare namespace SDK {
      * 返回生产商列表
      */
     listProducers(req: ListProducersRequest): Promise<ListProducersResponse>;
+  }
+  export interface WeatherAPI {
+    /**
+     * 返回今日天气变化列表
+     */
+    listWeather(req: ListWeatherRequest): Promise<ListWeatherResponse>;
   }
 
   type ListClustersRequest = {
@@ -601,6 +608,10 @@ declare namespace SDK {
     body: Array<Producer>;
   };
 
+  type ListWeatherResponse = {
+    body: Array<Weather>;
+  };
+
   type AcCluster = {
     id: string;
     createdAt: string;
@@ -649,6 +660,21 @@ declare namespace SDK {
     mode: string;
     producer: string;
     position: string;
+    status: string;
+    operationHours: number;
+    load: number;
+    broken: boolean;
+    power: number;
+    energyToday: number;
+    inTemp: number;
+    outTemp: number;
+    capacity: number;
+    steamTemp: number;
+    steamPress: number;
+    codeTemp: number;
+    codePress: number;
+    oilPress: number;
+    count: number;
   };
 
   type AcHostSnapshot = {
@@ -698,6 +724,16 @@ declare namespace SDK {
     mode: string;
     producer: string;
     position: string;
+    status: string;
+    load: number;
+    broken: boolean;
+    operationHours: number;
+    power: number;
+    energyToday: number;
+    pressure: number;
+    traffic: number;
+    inTemp: number;
+    outTemp: number;
   };
 
   type AcPumpSnapshot = {
@@ -741,6 +777,14 @@ declare namespace SDK {
     mode: string;
     producer: string;
     position: string;
+    status: string;
+    load: number;
+    broken: boolean;
+    operationHours: number;
+    power: number;
+    energyToday: number;
+    inTemp: number;
+    outTemp: number;
   };
 
   type AcTowerSnapshot = {
@@ -818,6 +862,13 @@ declare namespace SDK {
     content: string;
     start: string;
     end: string;
+  };
+
+  type Weather = {
+    time: string;
+    temperature: string;
+    humidity: string;
+    wind: string;
   };
 
   type PowerAggregation = {

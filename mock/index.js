@@ -6,11 +6,12 @@ const modelMockFun = require("./models");
 const producerMockFun = require("./producers");
 const statisticsMockFun = require("./statistics");
 const strategiyMockFun = require("./strategies");
+const weatherMockFun = require("./weather");
 
 const powerAggRouterFun = require("./aggs/power");
 
 const rewrites = {
-  "/ac/clusters*": "/clusters$1",
+  "/ac/clusters*": "/clusters",
   "/ac/hosts*": "/hosts$1",
   "/ac/towers*": "/towers$1",
   "/ac/pumps*": "/pumps$1",
@@ -64,6 +65,7 @@ const mock = () => ({
     producers: producerMockFun({}),
     statistics: statisticsMockFun({}),
     strategies: strategiyMockFun({}),
+    weather: weatherMockFun({}),
   },
 
   /**
