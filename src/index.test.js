@@ -31,7 +31,7 @@ describe("## SDK vehicle", () => {
   it("should list strategies", async () => {
     const result = await sdk.operation.listStrategies();
 
-    expect(result.body.length).toBe(4);
+    expect(result.body.length).toBe(6);
   });
 
   it("should list statistics ", async () => {
