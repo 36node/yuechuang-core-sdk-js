@@ -8,7 +8,7 @@ const generator = () => {
       updatedAt: faker.date.recent(),
       open: faker.random.boolean(),
       load: faker.random.number({ min: 0, max: 100 }),
-      mode: faker.random.arrayElement(["COOL", "HEAT"]),
+      mode: faker.random.arrayElement(["COOL"]),
       broken: faker.random.boolean(),
       remote: faker.random.boolean(),
       evaporatorWaterFlow: faker.random.boolean(),

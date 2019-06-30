@@ -14,8 +14,8 @@ const generator = () => {
     tmp.push({
       time: time.format("YYYY-MM-DD HH:mm"),
       weather: faker.random.arrayElement(["晴", "多云", "雨", "雪"]),
-      temperature: faker.random.number({ min: 0, max: 40 }),
-      humidity: faker.random.number({ min: 0, max: 70 }),
+      temperature: faker.random.number({ min: 20, max: 30 }),
+      humidity: faker.random.number({ min: 70, max: 90 }),
       wind: faker.random.number({ min: 0, max: 5 }),
     });
     time.subtract(30, "minutes");

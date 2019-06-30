@@ -1,11 +1,11 @@
-const faker = require("faker");
-const _ = require("lodash");
+const moment = require("moment");
 
 const generator = () => {
   return [
     {
       id: 1,
       name: "1#冷机",
+      date: moment().format("YYYY-MM-DD"),
       data: [
         {
           start: "06: 00",
@@ -28,6 +28,7 @@ const generator = () => {
     {
       id: 2,
       name: "2#冷机",
+      date: moment().format("YYYY-MM-DD"),
       data: [
         {
           start: "12: 00",
@@ -42,6 +43,7 @@ const generator = () => {
     {
       id: 3,
       name: "1#冷水泵",
+      date: moment().format("YYYY-MM-DD"),
       data: [
         {
           start: "8: 00",
@@ -56,6 +58,7 @@ const generator = () => {
     {
       id: 4,
       name: "1#冷却塔",
+      date: moment().format("YYYY-MM-DD"),
       data: [
         {
           start: "8: 00",
@@ -72,6 +75,48 @@ const generator = () => {
           width: "20%",
           color: "#ff1712",
           value: "9",
+        },
+      ],
+    },
+    {
+      id: 5,
+      name: "3#冷却塔",
+      date: moment()
+        .subtract(1, "days")
+        .format("YYYY-MM-DD"),
+      data: [
+        {
+          start: "8: 00",
+          end: "16: 00",
+          left: "10%",
+          width: "25%",
+          color: "#fcb96e",
+          value: "6",
+        },
+        {
+          start: "8: 00",
+          end: "16: 00",
+          left: "60%",
+          width: "20%",
+          color: "#ff1712",
+          value: "9",
+        },
+      ],
+    },
+    {
+      id: 6,
+      name: "3#主机",
+      date: moment()
+        .subtract(1, "days")
+        .format("YYYY-MM-DD"),
+      data: [
+        {
+          start: "9: 00",
+          end: "12: 00",
+          left: "15%",
+          width: "25%",
+          color: "#fcb96e",
+          value: "6",
         },
       ],
     },

@@ -11,7 +11,7 @@ const weatherMockFun = require("./weather");
 const powerAggRouterFun = require("./aggs/power");
 
 const rewrites = {
-  "/ac/clusters*": "/clusters",
+  "/ac/clusters*": "/clusters$1",
   "/ac/hosts*": "/hosts$1",
   "/ac/towers*": "/towers$1",
   "/ac/pumps*": "/pumps$1",
