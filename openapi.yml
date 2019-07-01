@@ -2109,9 +2109,9 @@ components:
           description: 实时负荷
         loadToday:
           $ref: "#/components/schemas/Range"
-        energyThisMonth:
+        energyMonthThisYear:
           $ref: "#/components/schemas/EnergyStructure"
-        energyLastMonth:
+        energyMonthLastYear:
           $ref: "#/components/schemas/EnergyStructure"
 
     EnergyStructure:

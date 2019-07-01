@@ -822,13 +822,13 @@ declare namespace SDK {
       min: number;
       max: number;
     };
-    energyThisMonth: {
+    energyMonthThisYear: {
       valley: number;
       normal: number;
       peak: number;
       sharp: number;
     };
-    energyLastMonth: {
+    energyMonthLastYear: {
       valley: number;
       normal: number;
       peak: number;
